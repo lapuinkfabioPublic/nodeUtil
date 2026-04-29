@@ -1,0 +1,1 @@
+console.log("Olá, mundo! Este é o meu primeiro arquivo JavaScript.");
