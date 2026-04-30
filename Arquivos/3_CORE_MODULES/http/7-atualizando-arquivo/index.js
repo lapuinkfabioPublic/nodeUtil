@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
         });
     }else
     {
-        const nameNewLine = name + '\r\n';
+        const nameNewLine = name + ',\r\n';
         
         fs.appendFile('name.txt', nameNewLine,fs.appendFile , (err) => {
             
