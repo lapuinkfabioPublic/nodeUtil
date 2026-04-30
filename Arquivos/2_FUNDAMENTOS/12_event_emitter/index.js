@@ -9,3 +9,4 @@ emitter.on('start', (name) => {
 console.log('Antes');
 emitter.emit('start', 'Fabio'); 
 console.log('Depois');
+

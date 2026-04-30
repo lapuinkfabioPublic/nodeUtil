@@ -13,6 +13,7 @@ inquirer.prompt([
         message: 'Qual a segunda nota?'
     }
 ]).then(answers => {   
+    
     console.log(answers);
     const media = (parseFloat(answers.p1) + parseFloat(answers.p2)) / 2;
     console.log(`A média é: ${media}`);
