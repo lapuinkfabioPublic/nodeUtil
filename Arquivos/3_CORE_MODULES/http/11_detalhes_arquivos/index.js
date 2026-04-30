@@ -15,3 +15,4 @@ fs.stat('arquivo.txt', (err, stats) => {
     console.log('Data de criação:', stats.birthtime);
     console.log('Data da última modificação:', stats.mtime);
 });
+11_detalhes_arquivos copy
