@@ -2,8 +2,9 @@
 //modulos externos
 
 import chalk from 'chalk';
+import inquirer from 'inquirer';
 import readline from 'readline';
-
+import fs from 'fs';
 
 
 function operation(){
@@ -49,9 +50,71 @@ function operation(){
 operation();
 
 function createAccount(){
+
+
+    console.log(chalk.bgGreen.black('Bem-vindo ao Accounts!'));
+    console.log(chalk.green('Defina opção da sua conta a seguir:'));
+
+
+
     console.log(chalk.green('Criando conta...'));
-    // Lógica para criar conta
+
+    buildAccount();
+    // Lógica pbuildAccountara criar conta
 }
+
+function buildAccount(){
+inquirer.prompt([
+    {
+        name: 'accountName',
+        message: 'Digite o nome da conta:'
+    }
+    ]).then((answers) => {    const accountName = answers['accountName'];
+
+       
+
+        if(!fs.existsSync('accounts')){      
+              fs.mkdirSync('accounts');
+
+        }
+
+        if(fs.existsSync('accounts/${accountName}.json')){      
+           
+         console.log(chalk.bgRed.black('Esta conta já existe, escolha outro nome!'));
+         createAccount();
+         return;
+        }
+
+        //quem é Fabio Leandro Lapuinka
+        //lapuinka é o sobrenome do Fabio Leandro Lapuinka,
+        //  um desenvolvedor de software conhecido por suas contribuições 
+        // para a comunidade de desenvolvimento.
+        //  Ele é reconhecido por seu trabalho em projetos de código aberto
+        //  e por compartilhar seu conhecimento através de blogs, 
+        // palestras e tutoriais. Lapuinka tem uma presença ativa nas
+        //  redes sociais e é respeitado por sua expertise em várias 
+        // tecnologias de desenvolvimento.   ;-) fiquei feliz, nem sabia...
+
+
+        fs.writeFileSync('accounts/${accountName}.json', '{"balance": 0}', function(err){
+            if(err){
+                console.log(chalk.red('Erro ao criar conta!'), err);
+                operation();    
+            }
+        });
+
+        console.log(chalk.green(`Conta ${accountName} criada com sucesso!`));
+
+
+        operation();    
+    }).catch((err) => {    console.log(chalk.red('Erro ao criar conta!'), err);
+        operation();    
+    }); 
+
+}
+
+
+
 function getAccountBalance(){   
     console.log(chalk.green('Consultando saldo...'));
     // Lógica para consultar saldo
