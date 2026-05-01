@@ -116,8 +116,29 @@ function buildAccount(){
 }
 
 function getAccountBalance(){   
+
+
     console.log(chalk.green('Consultando saldo...'));
-    // Lógica para consultar saldo
+    // Lógic    a para consultar saldo
+
+        inquirer.prompt([
+        {
+            name: 'accountName',
+            message: 'Digite o nome da conta:'
+        }
+        ]).then((answers) => {    const accountName = answers['accountName'];   
+            const fileJson = 'accounts/' + accountName + '.json';
+            if(!checkAccountExists(accountName)){
+                return;
+            }   
+            const accountData = JSON.parse(fs.readFileSync(fileJson, 'utf-8'));
+            console.log(chalk.green(`O saldo da conta ${accountName} é: R$ ${accountData.balance}`));
+            operation();    
+        }).catch((err) => {    console.log(chalk.red('Erro ao consultar conta!'), err);
+            operation();    
+        }); 
+
+
 }
 function deposit(){
     
@@ -172,6 +193,52 @@ function deposit(){
 function withdraw(){
     console.log(chalk.green('Sacando...'));
     // Lógica para sacar
+
+    inquirer.prompt([
+    {
+        name: 'accountName',
+        message: 'Digite o nome da conta:'
+    }
+    ]).then((answers) => {    const accountName = answers['accountName'];   
+        const fileJson = 'accounts/' + accountName + '.json';
+        if(!checkAccountExists(accountName)){
+            return;
+        }
+        const accountData = JSON.parse(fs.readFileSync(fileJson, 'utf-8'));
+        console.log(chalk.green(`Saldo atual: R$ ${accountData.balance}`));
+        inquirer.prompt([     {
+            name: 'amount',
+            message: 'Digite o valor a ser sacado:'
+        }]).then((answers) => {    const amount = parseFloat(answers['amount']);
+            if(isNaN(amount) || amount <= 0){
+                console.log(chalk.red('Valor inválido!'));
+                operation();
+                return;
+            }   
+            if(amount > accountData.balance){
+                console.log(chalk.red('Saldo insuficiente!'));
+                operation();
+                return;
+            }   
+            accountData.balance -= amount;
+            fs.writeFileSync(fileJson, JSON.stringify(accountData), function(err){
+                if(err){
+                    console.log(chalk.red('Erro ao sacar!'), err);
+                    operation();    
+                    return ;
+                }
+                console.log(chalk.green(`Saque de R$ ${amount} realizado com sucesso! Novo saldo: R$ ${accountData.balance}`));
+            });
+
+        operation();
+        }).catch((err) => {    console.log(chalk.red('Erro ao sacar!'), err);
+            operation();
+        });
+        }).catch((err) => {    console.log(chalk.red('Erro ao consultar conta!'), err);
+            operation();
+        });
+
+
 }   
 function checkAccountExists(accountName){
     const fileJson = 'accounts/' + accountName + '.json';
