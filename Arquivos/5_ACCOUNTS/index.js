@@ -129,11 +129,10 @@ function deposit(){
     ]).then((answers) => {    const accountName = answers['accountName'];
 
         const fileJson = 'accounts/' + accountName + '.json';
-        if(!fs.existsSync(fileJson)){
-            console.log(chalk.red('Esta conta não existe!'));
-            operation();
+        if(!checkAccountExists(accountName)){
             return;
         }
+
         const accountData = JSON.parse(fs.readFileSync(fileJson, 'utf-8'));
         console.log(chalk.green(`Saldo atual: R$ ${accountData.balance}`));
         inquirer.prompt([     { 
@@ -174,3 +173,13 @@ function withdraw(){
     console.log(chalk.green('Sacando...'));
     // Lógica para sacar
 }   
+function checkAccountExists(accountName){
+    const fileJson = 'accounts/' + accountName + '.json';
+    if(!fs.existsSync(fileJson)){
+        
+        operation();
+        return false;
+    }
+    return true;
+}
+
