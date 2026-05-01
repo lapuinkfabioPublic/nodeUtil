@@ -7,6 +7,9 @@ import readline from 'readline';
 import fs from 'fs';
 
 
+operation();
+
+
 function operation(){
     console.log(chalk.blue('Opções disponíveis:'));
     console.log('1. Criar conta');
@@ -47,8 +50,6 @@ function operation(){
 }
 
 
-operation();
-
 function createAccount(){
 
 
@@ -64,21 +65,22 @@ function createAccount(){
 }
 
 function buildAccount(){
-inquirer.prompt([
+
+    inquirer.prompt([
     {
         name: 'accountName',
         message: 'Digite o nome da conta:'
     }
     ]).then((answers) => {    const accountName = answers['accountName'];
 
-       
+       const fileJson = 'accounts/' + accountName + '.json';
 
         if(!fs.existsSync('accounts')){      
               fs.mkdirSync('accounts');
 
         }
 
-        if(fs.existsSync('accounts/${accountName}.json')){      
+        if(fs.existsSync(fileJson)){      
            
          console.log(chalk.bgRed.black('Esta conta já existe, escolha outro nome!'));
          createAccount();
@@ -95,11 +97,11 @@ inquirer.prompt([
         //  redes sociais e é respeitado por sua expertise em várias 
         // tecnologias de desenvolvimento.   ;-) fiquei feliz, nem sabia...
 
-
-        fs.writeFileSync('accounts/${accountName}.json', '{"balance": 0}', function(err){
+        fs.writeFileSync(fileJson, '{"balance": 0}', function(err){
             if(err){
                 console.log(chalk.red('Erro ao criar conta!'), err);
                 operation();    
+                return ;
             }
         });
 
@@ -113,14 +115,59 @@ inquirer.prompt([
 
 }
 
-
-
 function getAccountBalance(){   
     console.log(chalk.green('Consultando saldo...'));
     // Lógica para consultar saldo
 }
 function deposit(){
+    
+    inquirer.prompt([
+    {
+        name: 'accountName',
+        message: 'Digite o nome da conta:'
+    }
+    ]).then((answers) => {    const accountName = answers['accountName'];
+
+        const fileJson = 'accounts/' + accountName + '.json';
+        if(!fs.existsSync(fileJson)){
+            console.log(chalk.red('Esta conta não existe!'));
+            operation();
+            return;
+        }
+        const accountData = JSON.parse(fs.readFileSync(fileJson, 'utf-8'));
+        console.log(chalk.green(`Saldo atual: R$ ${accountData.balance}`));
+        inquirer.prompt([     { 
+            name: 'amount',
+            message: 'Digite o valor a ser depositado:'
+        }]).then((answers) => {    const amount = parseFloat(answers['amount']);        
+
+            if(isNaN(amount) || amount <= 0){
+                console.log(chalk.red('Valor inválido!'));
+                operation();
+                return;
+            }   
+            accountData.balance += amount;
+            fs.writeFileSync(fileJson, JSON.stringify(accountData), function(err){
+                if(err){
+                    console.log(chalk.red('Erro ao depositar!'), err);
+                    operation();    
+                    return ;
+                }       
+                console.log(chalk.green(`Depósito de R$ ${amount} realizado com sucesso! Novo saldo: R$ ${accountData.balance}`));
+                operation();    
+            });
+        }).catch((err) => {    console.log(chalk.red('Erro ao depositar!'), err);
+            operation();    
+        });
+    }).catch((err) => {    console.log(chalk.red('Erro ao consultar conta!'), err);
+        operation();    
+    });     
+
+
+
     console.log(chalk.green('Depositando...'));
+     operation();
+     return;
     // Lógica para depositar
 }
 function withdraw(){
