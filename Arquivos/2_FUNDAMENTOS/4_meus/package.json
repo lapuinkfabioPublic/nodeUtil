@@ -1,0 +1,12 @@
+{
+  "name": "lapuinka",
+  "version": "1.0.1",
+  "description": "app mob",
+  "license": "ISC",
+  "author": "Fabio Leandro Lapuinka",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
