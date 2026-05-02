@@ -20,6 +20,9 @@ app.use(checkAuth);
 app.get('/users/:id', (req, res) => {
     const id = req.params.id;
 
+    if(id === '1') {
+        console.log('Usuário 1 encontrado');
+    }
     //leitura do banco de dados resgatar o usuário com aquele id
     console.log(`O id do usuário é ${id}`);
      res.sendFile(path.join(basePath, 'users.html'));
