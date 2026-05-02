@@ -2,7 +2,7 @@
 const app = express();
 const path = require('path');
 const basePath = path.join(__dirname, 'templates');
-/*
+
 const checkAuth = (req, res, next) => {
     req.authStatus = true;
     if (req.authStatus) {
@@ -17,6 +17,22 @@ const checkAuth = (req, res, next) => {
 
 app.use(checkAuth);
 
+
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(basePath, 'index.html'));
+});
+
+
+/*Algumas rotas padrões para criar um CRUD de usuários*/
+app.get('/users/add', (req, res) => {
+    res.sendFile(path.join(basePath, 'userform.html'));
+});
+
+app.post('/users/save', (req, res) => {
+    console.log('Salvando usuário...');
+    res.send('Usuário salvo com sucesso!');
+});
 app.get('/users/:id', (req, res) => {
     const id = req.params.id;
 
@@ -28,22 +44,6 @@ app.get('/users/:id', (req, res) => {
      res.sendFile(path.join(basePath, 'users.html'));
    
 });
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(basePath, 'index.html'));
-});
-*/
-
-/*Algumas rotas padrões para criar um CRUD de usuários*/
-app.get('/users/add', (req, res) => {
-    res.sendFile(path.join(basePath, 'userform.html'));
-});
-
-app.post('/users/save', (req, res) => {
-    console.log('Salvando usuário...');
-    res.send('Usuário salvo com sucesso!');
-});
-
 
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
