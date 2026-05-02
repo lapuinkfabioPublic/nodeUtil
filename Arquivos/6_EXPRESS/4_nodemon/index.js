@@ -7,6 +7,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(basePath, 'index.html'));
 });
 app.listen(3000, () => {
-    console.log('Server rodando na porta 3000');
+    console.log('Servidor rodando na porta 3000');
 }); 
     
