@@ -1,6 +1,35 @@
 <div class="container">
     <h1>Meu projeto</h1>
 
+    {{#if error}}
+        <div class="alert alert-error mb-4">
+            {{error}}
+        </div>
+    {{/if}}
+
+    {{#if success}}
+        <div class="alert alert-success mb-4">
+            {{success}}
+        </div>
+    {{/if}}
+
+    <!-- Formulário de Filtro -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="card-title">Buscar Usuários</h2>
+        </div>
+        <form class="form" action="/" method="GET">
+            <div class="form-group">
+                <label for="search">Buscar por nome:</label>
+                <input type="text" id="search" name="search" placeholder="Digite o nome para buscar..." value="{{search}}">
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+                <a href="/" class="btn btn-secondary">Mostrar Todos</a>
+            </div>
+        </form>
+    </div>
+
     <div class="card mb-4">
         <div class="card-header">
             <h2 class="card-title">Cadastre um novo usuário</h2>
@@ -22,7 +51,15 @@
 
     <div class="card">
         <div class="card-header">
-            <h2 class="card-title">Lista de usuários</h2>
+            <h2 class="card-title">
+                Lista de usuários
+                {{#if search}}
+                    <small class="text-muted">(filtrando por: "{{search}}")</small>
+                {{/if}}
+            </h2>
+            {{#if usuarios}}
+                <p class="text-muted mb-0">{{usuarios.length}} usuário{{#if (gt usuarios.length 1)}}s{{/if}} encontrado{{#if (gt usuarios.length 1)}}s{{/if}}</p>
+            {{/if}}
         </div>
 
         {{#if usuarios}}
@@ -44,7 +81,12 @@
             </table>
         {{else}}
             <div class="alert alert-info">
-                <p class="text-center">Nenhum usuário cadastrado ainda.</p>
+                {{#if search}}
+                    <p class="text-center">Nenhum usuário encontrado com o nome "{{search}}".</p>
+                    <p class="text-center"><a href="/" class="btn btn-secondary btn-sm">Mostrar todos os usuários</a></p>
+                {{else}}
+                    <p class="text-center">Nenhum usuário cadastrado ainda.</p>
+                {{/if}}
             </div>
         {{/if}}
     </div>
