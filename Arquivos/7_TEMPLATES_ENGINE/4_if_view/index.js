@@ -9,6 +9,17 @@ app.engine('handlebars', exphbs.engine({
 
 app.set('view engine', 'handlebars');
 
+app.get("/dashboard", (req, res) => {
+    const user = {
+        name: 'João',
+        surname: 'Silva',
+        age: 30,
+        city: 'São Paulo'
+    };
+    const auth = true;
+    res.render('dashboard', { user: user, auth: auth });
+});
+
 app.get('/', (req, res) => {
     const user = {
         name: 'João',
@@ -17,8 +28,9 @@ app.get('/', (req, res) => {
         city: 'São Paulo'
     };
 
+    const auth = true
     const palavra = 'Ouro e Prata';
-    res.render('home', { user : user , palavra : palavra });
+    res.render('home', { user : user , palavra : palavra, auth: auth});
 });
 app.get('/contact', (req, res) => {
     res.render('contact');

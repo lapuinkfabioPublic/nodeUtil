@@ -1,4 +1,13 @@
 <h1>Página Inicial</h1>
 <p>Olá, {{user.name}} {{user.surname}}!</p>
+
+{{#if auth}}
+    <p>Usuário está autenticado <a href="/dashboard">Acessar Dashboard</a></p>
+{{else}}
+    <p>Usuário não autenticado</p>
+{{/if}} 
+
+
+
 <p>Você tem {{user.age}} anos e mora em {{user.city}}.</p>
 <p>Palavra: {{palavra}}</p>
