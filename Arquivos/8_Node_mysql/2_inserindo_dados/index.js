@@ -19,12 +19,18 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
     host: 'localhost',
+    port: 3306,
     user: 'root',
     password: '',
-    database: 'usuarios_db'
-}); 
+    database: 'usuarios_db',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    charset: 'utf8mb4',
+    timezone: 'Z'
+});
 // Rota para a página inicial
 app.get('/', (req, res) => {
     const search = req.query.search || '';
@@ -40,7 +46,7 @@ app.get('/', (req, res) => {
 
     sql += ' ORDER BY nome ASC';
 
-    connection.query(sql, params, (err, results) => {
+    pool.query(sql, params, (err, results) => {
         if (err) {
             console.error(err);
             res.status(500).send('Erro ao buscar usuários');
@@ -61,7 +67,7 @@ app.post('/add', (req, res) => {
     // Validação básica
     if (!nome || !email) {
         // Buscar usuários existentes para mostrar na página
-        connection.query('SELECT * FROM usuarios', (err, results) => {
+        pool.query('SELECT * FROM usuarios', (err, results) => {
             return res.render('home', {
                 usuarios: err ? [] : results,
                 error: 'Nome e email são obrigatórios'
@@ -72,11 +78,11 @@ app.post('/add', (req, res) => {
 
     // Query para inserir usuário
     const sql = 'INSERT INTO usuarios (nome, email) VALUES (?, ?)';
-    connection.query(sql, [nome, email], (err, result) => {
+    pool.query(sql, [nome, email], (err, result) => {
         if (err) {
             console.error('Erro ao inserir usuário:', err);
             // Buscar usuários existentes para mostrar na página
-            connection.query('SELECT * FROM usuarios', (err2, results) => {
+            pool.query('SELECT * FROM usuarios', (err2, results) => {
                 return res.render('home', {
                     usuarios: err2 ? [] : results,
                     error: 'Erro ao cadastrar usuário. Tente novamente.'
@@ -88,7 +94,7 @@ app.post('/add', (req, res) => {
         console.log('Usuário cadastrado com sucesso! ID:', result.insertId);
 
         // Buscar usuários atualizados e mostrar mensagem de sucesso
-        connection.query('SELECT * FROM usuarios', (err, results) => {
+        pool.query('SELECT * FROM usuarios', (err, results) => {
             return res.render('home', {
                 usuarios: err ? [] : results,
                 success: 'Usuário cadastrado com sucesso!'
@@ -96,6 +102,85 @@ app.post('/add', (req, res) => {
         });
     });
 });
+
+// Rota para página de edição
+app.get('/edit/:id', (req, res) => {
+    const { id } = req.params;
+    pool.query('SELECT * FROM usuarios WHERE id = ?', [id], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar usuário para edição:', err);
+            return res.status(500).send('Erro ao buscar usuário para edição');
+        }
+
+        if (!results.length) {
+            return res.status(404).send('Usuário não encontrado');
+        }
+
+        res.render('edit', { usuario: results[0] });
+    });
+});
+
+// Rota para atualizar usuário
+app.post('/edit/:id', (req, res) => {
+    const { id } = req.params;
+    const { nome, email } = req.body;
+
+    if (!nome || !email) {
+        pool.query('SELECT * FROM usuarios WHERE id = ?', [id], (err, results) => {
+            return res.render('edit', {
+                usuario: results && results[0] ? results[0] : { id, nome, email },
+                error: 'Nome e email são obrigatórios'
+            });
+        });
+        return;
+    }
+
+    const sql = 'UPDATE usuarios SET nome = ?, email = ? WHERE id = ?';
+    pool.query(sql, [nome, email, id], (err) => {
+        if (err) {
+            console.error('Erro ao atualizar usuário:', err);
+            pool.query('SELECT * FROM usuarios WHERE id = ?', [id], (err2, results) => {
+                return res.render('edit', {
+                    usuario: results && results[0] ? results[0] : { id, nome, email },
+                    error: 'Erro ao atualizar usuário. Tente novamente.'
+                });
+            });
+            return;
+        }
+
+        pool.query('SELECT * FROM usuarios ORDER BY nome ASC', (err, results) => {
+            return res.render('home', {
+                usuarios: err ? [] : results,
+                success: 'Usuário atualizado com sucesso!'
+            });
+        });
+    });
+});
+
+// Rota para excluir usuário
+app.post('/delete/:id', (req, res) => {
+    const { id } = req.params;
+    pool.query('DELETE FROM usuarios WHERE id = ?', [id], (err) => {
+        if (err) {
+            console.error('Erro ao excluir usuário:', err);
+            pool.query('SELECT * FROM usuarios ORDER BY nome ASC', (err2, results) => {
+                return res.render('home', {
+                    usuarios: err2 ? [] : results,
+                    error: 'Erro ao excluir usuário. Tente novamente.'
+                });
+            });
+            return;
+        }
+
+        pool.query('SELECT * FROM usuarios ORDER BY nome ASC', (err2, results) => {
+            return res.render('home', {
+                usuarios: err2 ? [] : results,
+                success: 'Usuário excluído com sucesso!'
+            });
+        });
+    });
+});
+
 const PORT = process.argv[3] || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

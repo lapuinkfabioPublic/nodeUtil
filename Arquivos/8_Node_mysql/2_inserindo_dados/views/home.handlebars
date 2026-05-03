@@ -68,6 +68,7 @@
                     <tr>
                         <th>Nome</th>
                         <th>Email</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +76,12 @@
                         <tr>
                             <td>{{this.nome}}</td>
                             <td>{{this.email}}</td>
+                            <td style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <a href="/edit/{{this.id}}" class="btn btn-secondary btn-sm">Editar</a>
+                                <form action="/delete/{{this.id}}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este usuário?');">Excluir</button>
+                                </form>
+                            </td>
                         </tr>
                     {{/each}}
                 </tbody>
