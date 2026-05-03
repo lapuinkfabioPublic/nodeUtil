@@ -1,0 +1,52 @@
+<div class="container">
+    <h1>Meu projeto</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="card-title">Cadastre um novo usuário</h2>
+        </div>
+        <form class="form" action="/add" method="POST">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" placeholder="Digite o nome completo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="Digite o email" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Adicionar Usuário</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Lista de usuários</h2>
+        </div>
+
+        {{#if usuarios}}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each usuarios}}
+                        <tr>
+                            <td>{{this.nome}}</td>
+                            <td>{{this.email}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        {{else}}
+            <div class="alert alert-info">
+                <p class="text-center">Nenhum usuário cadastrado ainda.</p>
+            </div>
+        {{/if}}
+    </div>
+</div>   
+    
