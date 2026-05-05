@@ -15,11 +15,17 @@ app.post('/createproduct', (req, res) => {
   const name = req.body.name
   const price = req.body.price
 
+  if(!name){
+
+    res.status(422).json( {message: 'O campo nome é obrigatório'});
+    res.end;
+  }
+  
   console.log(name)
   console.log(price)
 
-  res.json({
-    message: 'Produto criado com sucesso',
+  res.status(201).json({
+    message: `Produto ${name} criado com sucesso!`,
     data: { name, price }
   })
 })
@@ -28,4 +34,4 @@ app.get('/', (req,res) =>{
 
     res.json({message:'Primeira rota criada com sucesso'})
 })
-app.listen(3003)
+app.listen(3004)
