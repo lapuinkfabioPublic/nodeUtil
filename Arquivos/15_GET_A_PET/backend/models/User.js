@@ -8,7 +8,7 @@ const User = mongoose.model(
     new Schema({
         name: {
             type: String,
-            required
+            required: true
         },
 
         email:{
