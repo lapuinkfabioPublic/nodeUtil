@@ -44,8 +44,14 @@ module.exports = class UserController
             res.status(422).json({message: 'O confirmpassword é obrigatório'})
             return
         }
+       if(confirmpassword !== confirmpassword){
+
+            res.status(422).json({message: 'A confirmação senha é obrigatória'})
+            return
+        }
+
         res.json('Olá Get A Pet')
-       // res.end
+        res.end
     }
 }
  
