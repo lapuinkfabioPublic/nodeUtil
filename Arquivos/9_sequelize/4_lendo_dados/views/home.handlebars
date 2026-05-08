@@ -1,0 +1,14 @@
+<h1>Olá Sequelize2</h1>
+
+{{#if users.length}}
+    <h2>Usuários cadastrados:</h2>
+    <ul>
+        {{#each users}}
+            <li>{{this.name}} - {{this.occupation}}</li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>Nenhum usuário cadastrado.</p>
+{{/if}}
+<a href="/users/create">Adicionar usuário</a>
+ 
