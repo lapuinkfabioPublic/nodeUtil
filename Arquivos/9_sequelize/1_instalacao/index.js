@@ -1,6 +1,7 @@
 const express = require('express');
 const { engine } = require('express-handlebars');
 const conn = require('./db/conn');
+const User = require('./models/User');
 const app = express();
 
 app.use(
@@ -13,16 +14,24 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 
-app.post('/users/create', (req, res) => {
+app.post('/users/create', async (req, res) => {
     const name = req.body.name;
     const occupation = req.body.occupation;
-    const newsletter = req.body.newsletter;
-    console.log(name, occupation, newsletter);
+    let newsletter = req.body.newsletter;
+    console.log('aqui');
+    if(newsletter === 'on') {
+        newsletter = true;
+    } else {
+        newsletter = false;
+    }
+
+    console.log(req.body);
+    await User.create({name, occupation, newsletter});
     res.redirect('/');
 });
 
 
-app.get('/users/create', (req, res) => {
+app.get('/users/create',  (req, res) => {
     res.render('adduser');
 });
 
@@ -33,4 +42,4 @@ app.get('/', (req, res) => {
 
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
-}); 
+});
