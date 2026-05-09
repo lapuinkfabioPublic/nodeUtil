@@ -1,0 +1,17 @@
+<h1> Editando Usuário</h1>
+{{#if user}}
+    <form action="/users/update/{{user.id}}" method="POST">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" value="{{user.name}}" required>
+
+        <label for="occupation">Ocupação:</label>
+        <input type="text" id="occupation" name="occupation" value="{{user.occupation}}" required>
+
+        <button type="submit">Salvar</button>
+    </form>
+{{else}}
+    <p>Usuário não encontrado.</p>
+{{/if}}
+<a href="/">Voltar para a página inicial</a>
+
+    

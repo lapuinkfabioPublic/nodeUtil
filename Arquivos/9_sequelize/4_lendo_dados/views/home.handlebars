@@ -8,6 +8,11 @@
 
         <div class="actions">
             <a href="/users/{{this.id}}" class="details-btn">Ver detalhes</a>
+            <br>
+            <form action="/users/edit/{{this.id}}" method="GET" style="display:inline;">
+                <button type="submit" class="edit-btn">Editar</button>
+            </form>
+
             <form action="/users/delete/{{this.id}}" method="POST" style="display:inline;">
                 <button type="submit" class="delete-btn">Excluir</button>
             </form>
