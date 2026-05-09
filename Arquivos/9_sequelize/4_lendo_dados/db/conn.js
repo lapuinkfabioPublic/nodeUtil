@@ -11,6 +11,7 @@ async function connect() {
         console.log('Conexão com o banco de dados realizada com sucesso!');
 
         // Sincronizar as tabelas
+        //await sequelize.sync(true);
         await sequelize.sync();
         console.log('Tabelas sincronizadas com sucesso!');
 
