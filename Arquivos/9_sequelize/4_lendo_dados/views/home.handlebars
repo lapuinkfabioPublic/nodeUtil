@@ -4,7 +4,16 @@
     <h2>Usuários cadastrados:</h2>
     <ul>
         {{#each users}}
-            <li>{{this.name}} - {{this.occupation}}</li>
+            <li>{{this.name}} - {{this.occupation}}
+
+        <div class="actions">
+            <a href="/users/{{this.id}}" class="details-btn">Ver detalhes</a>
+            <form action="/users/delete/{{this.id}}" method="POST" style="display:inline;">
+                <button type="submit" class="delete-btn">Excluir</button>
+            </form>
+        </div>
+
+            </li>
         {{/each}}
     </ul>
 {{else}}

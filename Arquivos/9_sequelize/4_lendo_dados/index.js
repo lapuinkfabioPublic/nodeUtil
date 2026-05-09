@@ -14,6 +14,15 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 
+app.post('/users/delete:id', async (req, res) => {
+    const id = req.body.id;
+    await
+        User.destroy({where: {id: id}});
+    res.redirect('/');
+});
+
+
+
 app.post('/users/create', async (req, res) => {
     const name = req.body.name;
     const occupation = req.body.occupation;
