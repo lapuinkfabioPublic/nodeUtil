@@ -1,0 +1,53 @@
+<h1>Gerenciador de Usuários</h1>
+
+<div class="menu">
+    <a href="/users/create" class="btn btn-primary">+ Novo Usuário</a>
+</div>
+
+{{#if users}}
+    <div class="users-list">
+        <h2>Usuários Cadastrados</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Profissão</th>
+                    <th>Newsletter</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{occupation}}</td>
+                    <td>{{#if newsletter}}Sim{{else}}Não{{/if}}</td>
+                    <td>
+                        <a href="/users/edit/{{this.id}}" class="btn btn-edit">Editar</a>
+                        <form action="/users/delete/{{this.id}}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja deletar?');">
+                            <button type="submit" class="btn btn-delete">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+                {{#if Addresses}}
+                    {{#each Addresses}}
+                    <tr class="address-row">
+                        <td colspan="4">
+                            <strong>Endereço:</strong> {{street}}, {{number}} - {{city}}
+                            <form action="/addresses/delete/{{this.id}}" method="POST" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja deletar este endereço?');">
+                                <button type="submit" class="btn btn-delete btn-small">Remover</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{/each}}
+                {{/if}}
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+{{else}}
+    <div class="empty-state">
+        <p>Nenhum usuário cadastrado ainda.</p>
+        <a href="/users/create" class="btn btn-primary">Cadastrar primeiro usuário</a>
+    </div>
+{{/if}}
