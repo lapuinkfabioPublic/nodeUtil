@@ -1,0 +1,37 @@
+<h1>Adicione um usuário</h1>
+<form action="/users/create" class="form" method="POST">
+    <div class="form-control">
+        <label for="name">Nome:</label>
+        <input type="text" name="name" placeholder="Digite o nome do usuário" required>
+    </div>
+      <div class="form-control">
+        <label for="occupation">Profissão:</label>
+        <input type="text" name="occupation" placeholder="Digite a profissão do usuário" required>
+    </div>     
+      <div class="form-control fom-checkbox">
+         <input type="checkbox" name="newsletter" id="newsletter" checked>
+         <label for="newsletter">Deseja receber nossa newsletter?</label>
+     </div>   
+
+     <button type="submit">Cadastrar</button>
+</form>
+
+<div class="address-container">
+    <h2>Endereço do usuário</h2>
+    <form action="/addresses/create" class="form" method="POST">
+        <div class="form-control">
+            <label for="street">Rua:</label>
+            <input type="text" name="street" placeholder="Digite a rua do usuário" required>
+        </div>
+        <div class="form-control">
+            <label for="number">Número:</label>
+            <input type="text" name="number" placeholder="Digite o número da residência do usuário" required>
+        </div>
+        <div class="form-control">
+            <label for="city">Cidade:</label>
+            <input type="text" name="city" placeholder="Digite a cidade do usuário" required>
+        </div>
+        <button type="submit">Cadastrar Endereço</button>
+    </form>
+</div>
+<a href="/">Voltar para a página inicial</a>

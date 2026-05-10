@@ -4,6 +4,8 @@ const conn = require('./db/conn');
 const User = require('./models/User');
 const app = express();
 
+const Address = require('./models/Address');
+
 app.use(
     express.urlencoded({extended: true}
 ));
