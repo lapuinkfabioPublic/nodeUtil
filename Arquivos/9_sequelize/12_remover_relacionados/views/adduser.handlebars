@@ -19,6 +19,8 @@
 <div class="address-container">
     <h2>Endereço do usuário</h2>
     <form action="/addresses/create" class="form" method="POST">
+        <input type="hidden" name="userId" value="{{userId}}">  
+
         <div class="form-control">
             <label for="street">Rua:</label>
             <input type="text" name="street" placeholder="Digite a rua do usuário" required>
