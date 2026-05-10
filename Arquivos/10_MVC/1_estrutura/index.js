@@ -1,9 +1,19 @@
 const express = require('express');
+const exphbs = require('express-handlebars');
 const app = express();
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
-app.listen(3000, () => {
-    console.log('Example app listening on port 3000!');
-});
+app.engine('handlebars', exphbs.engine());
+app.set('view engine', 'handlebars');
+const conn = require('./db/conn');
 
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+    res.render('home');
+}); 
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
