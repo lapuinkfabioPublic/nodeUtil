@@ -4,6 +4,7 @@ const app = express();
 
 
 const Task = require('./models/Task');
+const TaskController = require('./controllers/TaskController');
 
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
@@ -18,6 +19,11 @@ app.get('/', (req, res) => {
     res.render('home');
 }); 
 
+app.get('/tasks', TaskController.showTasks);
+
+app.get('/tasks/create', (req, res) => {
+    res.render('tasks/create');
+});
 
 
 conn.sync().then(() => {
