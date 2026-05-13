@@ -1,5 +1,6 @@
 <div class="container">
     <h1>Tasks</h1>
+    <a href="/tasks/add" class="btn btn-primary mb-3">Criar Nova Task</a>
     {{#if tasks}}
         <table class="table table-striped">
             <thead>
@@ -7,6 +8,7 @@
                     <th>Title</th>
                     <th>Description</th>
                     <th>Status</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -14,7 +16,11 @@
                     <tr>
                         <td>{{this.title}}</td>
                         <td>{{this.description}}</td>
-                        <td><input type="checkbox" {{#if this.done}}checked{{/if}} disabled></td>
+                        <td><a href="/tasks/toggle/{{this.id}}"><input type="checkbox" {{#if this.done}}checked{{/if}} disabled style="cursor: pointer;"></a></td>
+                        <td>
+                            <a href="/tasks/edit/{{this.id}}" class="btn btn-sm btn-warning">Editar</a>
+                            <a href="/tasks/delete/{{this.id}}" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja deletar?')">Deletar</a>
+                        </td>
                     </tr>
                 {{/each}}
             </tbody>

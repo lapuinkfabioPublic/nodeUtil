@@ -1,0 +1,15 @@
+<div class="container">
+    <h1>Editar Task</h1>
+    <form action="/tasks/edit/{{task.id}}" method="POST">
+        <input type="hidden" name="id" value="{{task.id}}">
+        <div class="form-group">
+            <label for="title">Título:</label>
+            <input type="text" id="title" name="title" class="form-control" value="{{task.title}}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Descrição:</label>
+            <textarea id="description" name="description" class="form-control" required>{{task.description}}</textarea>
+        </div>
+        <button type="submit" class="form-control">Atualizar Task</button>
+    </form>
+</div>
