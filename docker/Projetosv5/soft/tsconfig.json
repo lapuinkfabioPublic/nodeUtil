@@ -1,0 +1,31 @@
+{
+    "ts-node": {
+        "require": ["tsconfig-paths/register"]
+    },
+    "compilerOptions": {
+        "rootDir": "./src",
+
+        "target": "ES2020",
+        "module": "commonjs",
+        "outDir": "./dist",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "noImplicitAny": false,
+        "allowJs": true,
+        "jsx": "react-jsx",
+        "isolatedModules": true,
+        "noUncheckedSideEffectImports": true,
+        "moduleDetection": "force",
+        "skipLibCheck": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+
+    "include": ["**/*"],
+    "exclude": ["node_modules", "commitlint.config.cjs", "eslint.config.js"]
+}
